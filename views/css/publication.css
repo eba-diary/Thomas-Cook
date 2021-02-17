@@ -1,0 +1,23 @@
+/* publication.css - styles for the publication viewing page */
+
+#report-btn {
+  margin-bottom: .5em;
+}
+
+#mirador-viewer {
+  position: relative;
+  height: 75vh;
+  width: 100%;
+  left: 0;
+}
+
+details > summary {
+  width: max-content;
+  text-transform: uppercase;
+  font-size: smaller;
+  margin-bottom: 1em;
+}
+
+details > dl {
+  margin-left: 1em;
+}

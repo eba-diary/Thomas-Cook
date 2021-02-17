@@ -1,0 +1,31 @@
+/* home.css - styles for the home/landing page */
+
+nav {
+  margin-bottom: 0 !important;
+}
+
+.landing-image {
+  background-image: url("/images/cook-nile-flotilla.jpg");
+  background-repeat:no-repeat;
+  background-size:cover;
+  margin-bottom: 1em;
+  height: 500px;
+}
+
+.landing-image > div {
+  background-color: rgba(0,0,0,.75);
+  display: flex;
+  align-items: end;
+  justify-content: center;
+  flex-direction: column;
+  text-align: right;
+  height: 100%;
+  color: white;
+  padding: 0 2em;
+}
+
+.start-exploring {
+  margin-top: .5em;
+  border-width: 2px;
+  font-weight: bold;
+}

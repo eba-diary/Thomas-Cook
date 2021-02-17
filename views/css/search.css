@@ -1,0 +1,21 @@
+/* search.css - styles for the search page */
+.checkbox-container > div {
+  margin-right: 1em;
+}
+
+.traveldate-control, #author-roles {
+  padding-left: 0 !important;
+}
+
+.traveldate-control > input {
+  margin: 0 .5em;
+  width: 8em;
+}
+
+.travel-dates {
+  vertical-align: top;
+}
+
+#search-btn {
+  margin-top: 1em;
+}

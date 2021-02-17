@@ -1,0 +1,29 @@
+/* main.css - styles for the entire site */
+
+main a, footer a {
+  color: #3d4d99;
+}
+
+footer {
+  margin-top: 1.5em;
+}
+
+nav {
+  margin-bottom: 1em;
+}
+
+.plain-authorlist {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 0
+}
+
+.small-authorlist {
+  list-style: none;
+  font-size: smaller;
+}
+
+.small-authorlist li::before {
+  content: "\2014";
+  margin-right: .25em;
+}

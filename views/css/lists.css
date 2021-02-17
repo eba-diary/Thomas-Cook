@@ -1,0 +1,23 @@
+/* lists.css - styles for list of publications and pages like it */
+
+
+#container {
+  margin: 2em 3em;
+  padding: 1em;
+}
+
+
+#index {
+  padding-bottom: 1em;
+}
+
+.index-link {
+  margin: .1em .2em;
+  padding: 0 .5em;
+  background-color: gainsboro;
+  font-family: monospace;
+}
+
+.travel-dates {
+  vertical-align: top;
+}
