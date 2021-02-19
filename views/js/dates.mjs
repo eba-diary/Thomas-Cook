@@ -1,5 +1,5 @@
 /**
- * @fileoverview publications-list.mjs gets and shows a list of travelers and their publications in the Travelogues DB
+ * @fileoverview dates.mjs gets and shows a list of ships and dates in the Thomas Cook DB
  */
 
 "use strict";

@@ -1,18 +1,25 @@
 {
-  "name": "thomas_cook",
+  "name": "thomas-cook",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eba-diary/Thomas-Cook.git"
+  },
   "author": "",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/eba-diary/Thomas-Cook/issues"
+  },
+  "homepage": "https://github.com/eba-diary/Thomas-Cook#readme",
   "dependencies": {
-    "ejs": "^3.1.5",
     "express": "^4.17.1",
     "multer": "^1.4.2",
     "sqlite": "^4.0.19",
-    "sqlite3": "^5.0.0"
+    "sqlite3": "^5.0.2"
   }
 }
