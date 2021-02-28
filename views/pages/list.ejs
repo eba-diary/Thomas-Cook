@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nile Travelogues - View publication</title>
+  <link rel="stylesheet" href="/css/publication.css">
+  <%- include("../partials/head") %>
+</head>
+<body>
+  <header>
+    <%- include("../partials/header") %>
+    <div class="container">
+      <h1 id="title"></h1>
+      <a id="report-btn" class="btn btn-warning btn-sm d-none">⚑ Report issue</a>
+      <details id="publication-details">
+        <summary>Show more info</summary>
+        <dl>
+          <div class="row">
+            <dt class="col-sm-3">Travel date</dt>
+            <dd class="col-sm-9" id="date"></dd>
+          <div class="row">
+            <dt class="col-sm-3">Ship name</dt>
+            <dd class="col-sm-9" id="name"></dd>
+          </div>
+          <div class="row">
+            <dt class="col-sm-3">Passenger list</dt>
+            <dd class="col-sm-9" id="list"></dd>
+          </div>
+          <div class="row">
+            <dt class="col-sm-3">Ship ID</dt>
+            <dd class="col-sm-9" id="id"></dd>
+          </div>
+        </dl>
+      </details>
+    </div>
+  </header>
+  <main>
+    <div id="pic-viewer"></div>
+  </main>
+  <%- include("../partials/footer") %>
+  <script type="module" src="/js/check-status.mjs"></script>
+  <script type="module" src="/js/list.mjs"></script>
+</body>
+</html>

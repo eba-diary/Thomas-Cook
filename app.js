@@ -22,6 +22,26 @@ const PORT = process.env.PORT || PORT_NUM;
 app.set("view engine", "ejs");
 
 /**
+ * Get the information of a ship by its id.
+ */
+app.get('/info/:id', async (req, res) => {
+  let id = req.params['id'];
+  console.log(id);
+  if (!id) {
+    res.status(CLIENT_ERROR).json({"error": "Missing one or more of the required params."});
+  } else {
+    try {
+      let query = "SELECT * FROM ships WHERE id=?";
+      let getInfo = await getData(query, id);
+      res.json(getInfo);
+    } catch (error) {
+      res.status(SERVER_ERROR_CODE).json({"error": "An error occurred on the server."});
+    }
+  }
+});
+
+
+/**
  * Get the information of a ship by its name.
  */
 app.get('/info/name', async (req, res) => {
@@ -100,11 +120,10 @@ app.get('/browser/names', async (req, res) => {
     let result = [];
     for (let i = 0; i < getInfo.length; i++) {
       let name = getInfo[i].name;
-      query = "SELECT date FROM ships WHERE name=?";
+      query = "SELECT date, id FROM ships WHERE name=?";
       let getDate = await getData(query, name);
       result.push({"name": name, "date": getDate});
     }
-    console.log(result);
     res.json(result);
   } catch (error) {
     res.status(SERVER_ERROR_CODE).json({"error": "An error occurred on the server."});

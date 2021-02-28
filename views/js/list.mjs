@@ -1,3 +1,7 @@
+/**
+ * @fileoverview dates.mjs gets and shows a list of ships and dates in the Thomas Cook DB
+ */
+
 "use strict";
 (function() {
 
@@ -7,48 +11,29 @@
    * sets up clickable buttons when page loads.
    */
   function init() {
-    getList();
+    let id = new URLSearchParams(window.location.search).get("id");
+    console.log(id);
+    fetch("/info/" + id)
+      .then(checkStatus)
+      .then(res => res.json())
+      .then(showShip)
+      .catch(handleError);
   }
 
-  function getList() {
-    fetch("/browser/names")
-    .then(checkStatus)
-    .then(resp => resp.json())
-    .then(addTable)
-    .catch(handleError);
-  }
+  function showShip(response) {
+    let current = response[0];
+    const reportUrl = new URL("/report-issue", window.location.origin);
+    reportUrl.searchParams.append("publicationId", current.id)
+    reportUrl.searchParams.append("publicationTitle", current.name + "-" + current.date)
+    document.getElementById("report-btn").href = reportUrl.href;
+    document.getElementById("report-btn").classList.remove("d-none");
 
-  function addTable(response) {
-    let allShips = id("ships");
-    for (let i = 0; i < response.length; i++) {
-      let shipDisplay = id("decade").content.cloneNode(true);
-      let shipTable = shipDisplay.querySelector(".publications");
-      let current = response[i];
-      let name = current.name;
-      let shipNameDisplay = shipDisplay.querySelector(".decade-name");
-
-      shipNameDisplay.textContent = name;
-
-
-      addList(shipTable, current);
-      allShips.appendChild(shipDisplay);
-    }
-    document.getElementById("loadingmsg").remove();
-  }
-
-  function addList(table, current) {
-      let name = current.name;
-      let dates = current.date;
-      for (let j = 0; j < dates.length; j++) {
-        let tableBody = table.querySelector("tbody");
-        let singleShip = dates[j];
-        let row = document.getElementById("publication").content.cloneNode(true);
-        let id = row.querySelector(".title");
-        id.href = "/list?id=" + singleShip.id;
-        id.textContent = name;
-        row.querySelector(".travel-dates").textContent = singleShip.date;
-        tableBody.appendChild(row);
-      }
+    id("title").textContent = current.name + "-" + current.date;
+    document.title = "Thomas Cook - " + current.name;
+    id("date").textContent = current.date;
+    id("name").textContent = current.name;
+    id("list").textContent = current.lists;
+    id("id").textContent = current.id;
   }
 
 

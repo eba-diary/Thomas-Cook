@@ -8,7 +8,7 @@ const router = express.Router();
 // Names of pages to expose to the front-end by directly going to them
 const PAGES = [
   "home",
-  "passenger_lists",
+  "list",
   "dates",
   "ships",
   "search",
