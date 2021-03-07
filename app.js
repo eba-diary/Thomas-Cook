@@ -26,7 +26,6 @@ app.set("view engine", "ejs");
  */
 app.get('/info/:id', async (req, res) => {
   let id = req.params['id'];
-  console.log(id);
   if (!id) {
     res.status(CLIENT_ERROR).json({"error": "Missing one or more of the required params."});
   } else {

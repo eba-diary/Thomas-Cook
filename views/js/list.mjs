@@ -28,12 +28,19 @@
     document.getElementById("report-btn").href = reportUrl.href;
     document.getElementById("report-btn").classList.remove("d-none");
 
-    id("title").textContent = current.name + "-" + current.date;
+    id("title").textContent = current.name + ": " + current.date;
     document.title = "Thomas Cook - " + current.name;
     id("date").textContent = current.date;
     id("name").textContent = current.name;
     id("list").textContent = current.lists;
     id("id").textContent = current.id;
+    let pics = id("pic-viewer");
+    for (let i = 1; i <= 2; i++) {
+      let img = gen("img");
+      img.src = "images/" + current.id + "-" + i + ".jpg";
+      img.alt = current.name + "-" + current.date;
+      pics.appendChild(img);
+    }
   }
 
 
