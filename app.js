@@ -130,6 +130,25 @@ app.get('/browser/names', async (req, res) => {
 });
 
 
+/**
+ * gets the issues reported and adds to the database.
+ */
+app.post('/report', async (req, res) => {
+  let ship = req.body.ship;
+  let content = req.body.content;
+  let email = req.body.email;
+  let report = "INSERT INTO issues (content, email, ship) VALUES (?, ?, ?)";
+  if (!ship || !content || !email) {
+    res.type('text').status(CLIENT_ERROR).send("Missing one or more of the required params.");
+  } else {
+    try {
+      await getData(report, [content, email, ship]);
+      res.type('text').send("successfully reported");
+    } catch (error) {
+      res.type('text').status(SERVER_ERROR_CODE).send("An error occurred on the server.");
+    }
+  }
+});
 
 
 
