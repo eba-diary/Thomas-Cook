@@ -219,7 +219,6 @@ app.get('/find', async(req, res) => {
                         getInfo = await getData(query, [ship, max]);
                     }
                 }
-                console.log(getInfo);
                 result = getInfo;
             } else {
                 query = "SELECT * FROM ships WHERE date=?";
@@ -227,6 +226,7 @@ app.get('/find', async(req, res) => {
                 result = getInfo;
             }
             res.json(result);
+            console.log(result);
         } catch (error) {
             res.status(SERVER_ERROR_CODE).json({ "error": "An error occurred on the server." });
         }

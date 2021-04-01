@@ -1,7 +1,6 @@
 /**
  * @fileoverview search.js populates the search page, sends search queries to API, and shows results
  */
-import checkStatus from "./check-status.mjs";
 
 "use strict";
 (function() {
@@ -39,8 +38,13 @@ import checkStatus from "./check-status.mjs";
     }
 
     function showResults(response) {
+        let newTeble = id("new");
+        if (newTeble) {
+            newTeble.remove();
+        }
         let decadeDisplay = id("decade").content.cloneNode(true);
         let table = decadeDisplay.querySelector(".publications");
+        table.setAttribute("id", "new");
         addList(table, response);
         id("decades").appendChild(decadeDisplay);
     }
@@ -50,21 +54,14 @@ import checkStatus from "./check-status.mjs";
         for (let i = 0; i < response.length; i++) {
             let getDate = response[i];
             let date = getDate.date;
-            let getName = getDate.name;
-            for (let j = 0; j < getName.length; j++) {
-                console.log(tableBody);
-                let row = document.getElementById("publication").content.cloneNode(true);
-                let ship = getName[j];
-                let name = ship.name;
-                let id = ship.id;
-                let title = row.querySelector(".title");
-                title.href = "/list?id=" + id;
-                title.textContent = name;
-                row.querySelector(".travel-dates").textContent = date;
-                console.log(row);
-                tableBody.appendChild(row);
-                console.log(tableBody);
-            }
+            let name = getDate.name;
+            let id = getDate.id;
+            let row = document.getElementById("publication").content.cloneNode(true);
+            let title = row.querySelector(".title");
+            title.href = "/list?id=" + id;
+            title.textContent = name;
+            row.querySelector(".travel-dates").textContent = date;
+            tableBody.appendChild(row);
         }
     }
 
@@ -74,7 +71,7 @@ import checkStatus from "./check-status.mjs";
      */
     function handleError() {
         let context = "error: something wrong happened, may want to try another way";
-        id("container").textContent = context;
+        id("error").textContent = context;
     }
 
     /* --- HELPER FUNCTIONS --- */
