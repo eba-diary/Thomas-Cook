@@ -1,72 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Search</title>
-  <link rel="stylesheet" href="/css/search.css">
-  <link rel="stylesheet" href="/css/form.css">
-  <%- include("../partials/head") %>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search</title>
+    <link rel="stylesheet" href="/css/search.css">
+    <link rel="stylesheet" href="/css/form.css">
+    <%- include("../partials/head") %>
 </head>
+
 <body>
-  <header>
-    <%- include("../partials/header") %>
-    <h2 class="container">Search</h2>
-  </header>
-  <main class="container">
-    <form>
-      <div class="row">
-        <label for="ship" class="col-sm-2">Ship Name</label>
-        <input type="text" class="form-control col-sm-10" id="ship" name="ship"
-          placeholder="(contains)">
-      </div>
-      <div class="row">
-          <label for="date" class="col-sm-2">Date</label>
-          <input type="text" class="form-control col-sm-10" id="date" name="date"
-            placeholder="(contains)">
-      </div>
-      <div class="row">
-        <label for="passenger" class="col-sm-2">Passenger Name</label>
-        <input type="text" class="form-control col-sm-10" id="passenger" name="passenger"
-          placeholder="(contains)">
-    </div>
-      <details>
-        <summary>More search options</summary>
-        <div class="row">
-          <span class="col-sm-2">Travel dates</span>
-          <div class="col-sm-10 traveldate-control">
-            Between
-            <input type="number" id="traveldate-min" name="traveldate-min">
-            and
-            <input type="number" id="traveldate-max" name="traveldate-max">
-          </div>
-        </div>
-      </details>
-    </form>
-    <button id="search-btn">Search</button>
-    <table id="results" class="container d-none">
-      <thead>
-        <tr>
-          <th>Ship</th>
-          <th class="text-right">Years&nbsp;traveled</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-      <template id="result">
-        <tr>
-          <td>
-            <a class="title"></a>
-            <span class="readable text-secondary d-none" title="The publication can be read on this site"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-book-fill" viewBox="0 0 16 16">
-              <path fill-rule="evenodd" d="M8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783z"/>
-            </svg></span>
-          </td>
-          <td class="travel-dates text-right font-weight-bold"></td>
-        </tr>
-      </template>
-    </table>
-  </main>
-  <%- include("../partials/footer") %>
-  <script type="module" src="/js/check-status.mjs"></script>
-  <script type="module" src="/js/search.mjs"></script>
+    <header>
+        <%- include("../partials/header") %>
+            <h2 class="container">Search</h2>
+    </header>
+    <main class="container">
+        <form>
+            <div class="row">
+                <label for="ship" class="col-sm-2">Ship Name</label>
+                <input type="text" class="form-control col-sm-10" id="ship" name="ship" placeholder="Oonas">
+            </div>
+            <div class="row">
+                <label for="date" class="col-sm-2">Date</label>
+                <input type="text" class="form-control col-sm-10" id="date" name="date" placeholder="1900-01-01">
+            </div>
+            <div class="row">
+                <label for="passenger" class="col-sm-2">Passenger Name</label>
+                <input type="text" class="form-control col-sm-10" id="passenger" name="passenger" placeholder="(contains)">
+            </div>
+            <details>
+                <summary>More search options</summary>
+                <div class="row">
+                    <span class="col-sm-2">Travel dates</span>
+                    <div class="col-sm-10 traveldate-control">
+                        Between
+                        <input type="number" id="traveldate-min" name="traveldate-min" placeholder="1900-01-01"> and
+                        <input type="number" id="traveldate-max" name="traveldate-max" placeholder="1900-01-01">
+                    </div>
+                </div>
+            </details>
+        </form>
+        <button id="search-btn">Search</button>
+        <p id="error"></p>
+        <template id="decade">
+          <h2 class="decade-name"></h2>
+          <table class="publications container">
+            <thead>
+              <tr>
+                <th>Ship name</th>
+                <th class="text-right">Years&nbsp;traveled</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </template>
+        <template id="publication">
+          <tr>
+            <td>
+              <a class="title"></a>
+              <span class="readable text-secondary" title="The passenger list can be read on this site"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-book-fill" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783z"/>
+              </svg></span>
+              <ul class="author small-authorlist"></ul>
+            </td>
+            <td class="travel-dates text-right font-weight-bold"></td>
+          </tr>
+        </template>
+
+    </main>
+    <%- include("../partials/footer") %>
+        <script type="module" src="/js/check-status.mjs"></script>
+        <script type="module" src="/js/search.mjs"></script>
 </body>
+
 </html>

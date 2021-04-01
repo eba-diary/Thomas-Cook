@@ -3,103 +3,122 @@
  */
 import checkStatus from "./check-status.mjs";
 
-init();
+"use strict";
+(function() {
 
-/**
- * Initialize the page by populating search options and activating the form
- */
-function init() {
-  fetch("/api/searchpagedata")
-    .then(checkStatus)
-    .then(res => res.json())
-    .then(data => populateSearchForm(data));
-  let searchParams = (new URL(document.location)).searchParams;
-  if (!searchParams.entries().next().done) {
-    getSearchResults(searchParams);
-  }
-  document.getElementById("search-btn").addEventListener("click", function(event) {
-    event.preventDefault();
-    let searchParams = new URLSearchParams(new FormData(document.querySelector("form")));
-    history.pushState(null, null, "?" + searchParams.toString());
-    getSearchResults(searchParams);
-  });
-}
+    window.addEventListener("load", init);
 
-/**
- * Populate search fields with limited numbers of options
- * @param data {Object} search page data from SearchPageData API
- */
-function populateSearchForm(data) {
-  for (let roleName of data["author_roles"]) {
-    let roleId = "role-" + roleName.toLowerCase();
-    let role = document.getElementById("role").content.cloneNode(true);
-    let checkbox = role.querySelector("input");
-    checkbox.id = roleId;
-    checkbox.name = "role";
-    checkbox.value = roleName;
-    let label = role.querySelector("label")
-    label.textContent = roleName;
-    label.setAttribute("for", roleId)
-    document.getElementById("author-roles").appendChild(role);
-  }
-
-  populateDropdowns("gender", data["genders"]);
-  populateDropdowns("nationality", data["nationalities"]);
-}
-
-/**
- * Add options from an array to a dropdown
- * @param dropdownId {String} ID of the dropdown to add options to
- * @param options {String[]} options to add
- */
-function populateDropdowns(dropdownId, options) {
-  let dropdown = document.getElementById(dropdownId);
-  for (let optionName of options) {
-    let option = document.createElement("option");
-    option.value = optionName;
-    option.textContent = optionName;
-    dropdown.appendChild(option);
-  }
-}
-
-/**
- * Get search results
- * @param searchParams {URLSearchParams} URL search params for publication search
- */
-function getSearchResults(searchParams) {
-  fetch("/api/search?" + searchParams.toString())
-    .then(checkStatus)
-    .then(res => res.json())
-    .then(results => showResults(results));
-}
-
-/**
- * Shows the search results in the results table
- * @param {Object[]} publications list of publications that matched the search query
- */
-function showResults(publications) {
-  let resultsTable = document.getElementById("results");
-  let resultsBody = resultsTable.querySelector("tbody");
-  resultsBody.innerHTML = "";
-  resultsTable.classList.remove("d-none");
-  for (let publication of publications) {
-    let result = document.getElementById("result").content.cloneNode(true);
-
-    let title = result.querySelector(".title");
-    title.href = "/publication?id=" + publication.id;
-    title.textContent = publication.title;
-    if (publication.canread === 1) result.querySelector(".readable").classList.remove("d-none");
-
-    let authorList = result.querySelector(".author");
-    for (let traveler of publication.travelers) {
-      let author = document.createElement("li");
-      author.textContent = traveler.name +
-        (traveler.type === "Author" ? "" : ` (${traveler.type})`);
-      authorList.appendChild(author);
+    /**
+     * Initialize the page by populating search options and activating the form
+     */
+    function init() {
+        id("error").textContent = "";
+        id("search-btn").addEventListener("click", search);
     }
 
-    result.querySelector(".travel-dates").textContent = publication.travel_dates;
 
-    resultsBody.appendChild(result);
-  }
-}
+    /**
+     * Get search results
+     */
+    function search() {
+        let ship = id("ship").value;
+        let date = id("date").value;
+        let passenger = id("passenger").value;
+        let min = id("traveldate-min").value;
+        let max = id("traveldate-max").value;
+        if (date || passenger || ship) {
+            let url = "find?ship=" + ship + "&date=" + date + "&passenger=" + passenger + "&min=" + min + "&max=" + max;
+            fetch(url)
+                .then(checkStatus)
+                .then(resp => resp.json())
+                .then(showResults)
+                .catch(handleError);
+        } else {
+            id("error").textContent = "Fail to search, please enter at least one condition."
+        }
+    }
+
+    function showResults(response) {
+        let decadeDisplay = id("decade").content.cloneNode(true);
+        let table = decadeDisplay.querySelector(".publications");
+        addList(table, response);
+        id("decades").appendChild(decadeDisplay);
+    }
+
+    function addList(table, response) {
+        let tableBody = table.querySelector("tbody");
+        for (let i = 0; i < response.length; i++) {
+            let getDate = response[i];
+            let date = getDate.date;
+            let getName = getDate.name;
+            for (let j = 0; j < getName.length; j++) {
+                console.log(tableBody);
+                let row = document.getElementById("publication").content.cloneNode(true);
+                let ship = getName[j];
+                let name = ship.name;
+                let id = ship.id;
+                let title = row.querySelector(".title");
+                title.href = "/list?id=" + id;
+                title.textContent = name;
+                row.querySelector(".travel-dates").textContent = date;
+                console.log(row);
+                tableBody.appendChild(row);
+                console.log(tableBody);
+            }
+        }
+    }
+
+    /**
+     * This function is called when an error occurs in the fetch call chain.
+     * Display the error message in error field.
+     */
+    function handleError() {
+        let context = "error: something wrong happened, may want to try another way";
+        id("container").textContent = context;
+    }
+
+    /* --- HELPER FUNCTIONS --- */
+
+    /**
+     * Returns the element that has the ID attribute with the specified value.
+     * @param {string} id - element ID.
+     * @returns {object} - DOM object associated with id.
+     */
+    function id(id) {
+        return document.getElementById(id);
+    }
+
+    /**
+     * Returns an array of elements matching the given query.
+     * @param {string} query - CSS query selector.
+     * @returns {array} - Array of DOM objects matching the given query.
+     */
+    function qs(query) {
+        return document.querySelector(query);
+    }
+
+    /**
+     * Returns a new element with the given tag name.
+     * @param {string} tagName - HTML tag name for new DOM element.
+     * @returns {object} New DOM object for given HTML tag.
+     */
+    function gen(tagName) {
+        return document.createElement(tagName);
+    }
+
+    /**
+     * Throw an Error if the fetch response status is not ok
+     * before processing the data.
+     * Otherwise otherwise rejected Promise result
+     * @param {object} res - the given fetch response
+     * @returns {object} return an error if the fetch response status is not ok,
+     * otherwise rejected Promise result.
+     */
+    async function checkStatus(res) {
+        if (!res.ok) {
+            throw new Error(await res.text());
+        }
+        return res;
+    }
+
+})();
