@@ -155,15 +155,10 @@ app.post('/report', async(req, res) => {
  */
 app.get('/find', async(req, res) => {
     let ship = req.query['ship'];
-    console.log(ship);
     let date = req.query['date'];
-    console.log(date);
     let passenger = req.query['passenger'];
-    console.log(passenger);
     let min = req.query['min'];
-    console.log(min);
     let max = req.query['max'];
-    console.log(max);
     if (!ship && !date && !passenger) {
         res.type('text').status(CLIENT_ERROR).send("Need at least one required params.");
     } else {
@@ -226,7 +221,6 @@ app.get('/find', async(req, res) => {
                 result = getInfo;
             }
             res.json(result);
-            console.log(result);
         } catch (error) {
             res.status(SERVER_ERROR_CODE).json({ "error": "An error occurred on the server." });
         }

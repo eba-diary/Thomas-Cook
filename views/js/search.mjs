@@ -20,6 +20,7 @@
      * Get search results
      */
     function search() {
+        id("error").textContent = "";
         let ship = id("ship").value;
         let date = id("date").value;
         let passenger = id("passenger").value;
